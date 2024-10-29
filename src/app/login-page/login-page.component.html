@@ -1,0 +1,61 @@
+<div class="main">
+    <div class="login-container">
+        <div class="heading">
+            <h1 style="text-align: center; font-size: 34px">
+                Cloud Banking Solutions
+            </h1>
+            <h2>Sign In</h2>
+            <p>
+                New user?<span
+                    ><a href="/register"
+                        >Create an account</a
+                    ></span
+                >
+            </p>
+        </div>
+        <form (ngSubmit)="onLogin(loginForm)" #loginForm="ngForm">
+            <label class="email-lbl">Enter email address</label>
+            <input
+                id="email-inp"
+                type="email"
+                placeholder="Email Address"
+                required
+                name="email"
+                ngModel
+                pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
+            />
+            <label class="pass-lbl">Enter your password</label>
+            <input
+                id="pass-inp"
+                placeholder="Password"
+                type="password"
+                required
+                minlength="8"
+                name="password"
+                ngModel
+            />
+            <input id="sign-in-btn" type="submit" value="Sign In" [disabled]="loginForm.invalid"/>
+        </form>
+        <div>
+            <p id="error-dsp">
+                @if (
+                    loginForm.form.get('email')?.touched &&
+                    loginForm.form.get('email')?.errors?.['required']
+                ) {
+                    Email can't be empty!
+                } @else if (loginForm.form.get('email')?.errors?.['pattern']) {
+                    Email isn't valid!
+                } @else if (
+                    loginForm.form.get('password')?.touched &&
+                    loginForm.form.get('password')?.errors?.['required']
+                ) {
+                    Password can't be empty!
+                } @else if (loginForm.form.get('password')?.errors?.['minlength'] && loginForm.form.get('password')?.dirty) {
+                    Password < than 8 characters!
+                } @else {
+                    {{errorOut}}
+                }
+            </p>
+        </div>
+    </div>
+</div>

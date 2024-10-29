@@ -1,0 +1,16 @@
+.main-content {
+    display: grid;
+    grid-template-columns: 0.30fr 0.70fr;
+    padding: 10px;
+    padding-top: 0;
+    gap: 10px;
+    background-color: #1e1e1e;
+    height: 115vh;
+}
+
+@media only screen and (max-width: 855px) {
+    .main-content {
+        grid-template-columns: 1fr;
+        height: fit-content;
+    }
+}

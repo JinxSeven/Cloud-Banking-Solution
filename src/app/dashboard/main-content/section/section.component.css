@@ -1,0 +1,688 @@
+.section {
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    display: grid;
+    gap: 10px;
+}
+
+.section .top-section {
+    display: flex;
+    justify-content: space-between;
+    color: #f0f0f0;
+    text-align: center;
+    gap: 10px;
+}
+
+.section .top-section .income-div,
+.section .top-section .expense-div,
+.section .top-section .balance-div {
+    background-color: #2c2c2c;
+    /* background-color: #1e1e1e; */
+    padding: 10px;
+    border-radius: 10px;
+    width: 35%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.section .top-section .income-div {
+    color: #12bb50;
+    /* border: 1px solid #12bb50; */
+}
+
+.section .top-section .expense-div {
+    color: #ec2b2b;
+    /* border: 1px solid #ec2b2b; */
+}
+
+.section .top-section .balance-div {
+    color: #1384cf;
+    /* border: 1px solid #1384cf; */
+}
+
+.section .mid-section .mid-section-one {
+    grid-template-columns: repeat(3, 1fr);
+    display: grid;
+    gap: 10px;
+}
+
+.section .mid-section .mid-section-one i {
+    margin: 15px;
+}
+
+#new-bnkacc-btn,
+#new-goal-btn,
+#new-transaction-btn {
+    width: 100%;
+    color: #af92ff;
+    background-color: #2c2c2c;
+    height: 20vh;
+    padding: 0px;
+    border-radius: 10px;
+    text-align: center;
+    align-content: center;
+    border: none;
+    /* border: 1px solid #D0BFFF; */
+    font-size: 15px;
+    transition: background-color 0.3s;
+}
+
+.section .mid-section .mid-section-one #new-goal-btn:hover,
+#new-bnkacc-btn:hover,
+#new-transaction-btn:hover {
+    cursor: cell;
+    background-color: #3f3f3f;
+}
+
+.section .mid-section .mid-section-one #new-goal-btn:active,
+#new-bnkacc-btn:active,
+#new-transaction-btn:active {
+    cursor: crosshair;
+}
+
+.section .goal-form-div #new-goal-form label {
+    margin: 10px 0;
+}
+
+.section .goal-form-div #new-goal-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.section .goal-form-div #new-goal-form input {
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid #444444;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #3b3b3b;
+    color: #f0f0f0;
+    color-scheme: dark;
+}
+
+
+.section .acc-form-div #new-acc-form label {
+    margin: 10px 0;
+}
+
+.section .acc-form-div #new-acc-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.section .acc-form-div #new-acc-form input {
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid #444444;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #3b3b3b;
+    color: #f0f0f0;
+    color-scheme: dark;
+}
+
+.overlay {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    backdrop-filter: blur(2px);
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+}
+
+.goal-form-div {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #2c2c2c;
+    padding: 8px 20px 20px 24px;
+    color: #f0f0f0;
+    width: 30%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    display: none;
+    z-index: 101;
+}
+
+.acc-form-div {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #2c2c2c;
+    padding: 8px 20px 20px 24px;
+    color: #f0f0f0;
+    width: 30%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    display: none;
+    z-index: 101;
+}
+
+.close-popup {
+    position: absolute;
+    top: 38px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: #f0f0f0;
+}
+
+.section .goal-form-div #new-goal-form input[type="submit"] {
+    background-color: #007bff;
+    color: #f0f0f0;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.section .goal-form-div #new-goal-form input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.section .goal-form-div #new-goal-form input[type="submit"]:disabled {
+    color: #696969;
+    background-color: #00264e;
+    cursor: default;
+}
+
+.section .acc-form-div #new-acc-form input[type="submit"] {
+    background-color: #007bff;
+    color: #f0f0f0;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.section .acc-form-div #new-acc-form input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.section .acc-form-div #new-acc-form input[type="submit"]:disabled {
+    color: #696969;
+    background-color: #00264e;
+    cursor: default;
+}
+
+.popup-errors {
+    color: #ff2121 !important;
+    transition: opacity 0.3s;
+    margin-top: 5px;
+    margin-bottom: 7px;
+}
+
+.section .goal-form-div #new-goal-form input.ng-invalid.ng-touched {
+    border-color: #ff2121;
+}
+
+.section .acc-form-div #new-acc-form input.ng-invalid.ng-touched {
+    border-color: #ff2121;
+}
+
+.section .transaction-form-div #new-transaction-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.section .transaction-form-div #edt-transaction-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.transaction-form-div {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #2c2c2c;
+    padding: 20px;
+    width: 30%;
+    color: #f0f0f0;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    display: none;
+    z-index: 101;
+}
+
+.section .transaction-form-div #new-transaction-form input[type=submit] {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 1rem;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.section .transaction-form-div #new-transaction-form input[type=submit]:hover {
+    background-color: #0056b3;
+}
+
+.section .transaction-form-div #new-transaction-form input[type="submit"]:disabled {
+    color: #696969;
+    background-color: #00264e;
+    cursor: default;
+}
+
+.section .transaction-form-div #new-transaction-form input {
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid #444444;
+    border-radius: 5px;
+    font-size: 16px;
+    color-scheme: dark;
+    background-color: #3b3b3b;
+    color: #f0f0f0;
+}
+
+.section .transaction-form-div #new-transaction-form select {
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid #444444;
+    background-color: #3b3b3b;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #f0f0f0;
+}
+
+.section .transaction-form-div #new-transaction-form label {
+    margin: 10px 0;
+}
+
+.section .transaction-form-div #new-transaction-form input.ng-invalid.ng-touched,
+.section .transaction-form-div #new-transaction-form select.ng-invalid.ng-touched {
+    border-color: #ff2121;
+}
+
+.section .transaction-form-div #new-transaction-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.section .transaction-form-div #edit-transaction-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.transaction-form-div {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #2c2c2c;
+    padding: 20px;
+    width: 30%;
+    color: #f0f0f0;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    display: none;
+    z-index: 101;
+}
+
+.section .transaction-form-div #new-transaction-form input[type=submit] {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 1rem;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.section .transaction-form-div #new-transaction-form input[type=submit]:hover {
+    background-color: #0056b3;
+}
+
+.section .transaction-form-div #new-transaction-form input[type="submit"]:disabled {
+    color: #696969;
+    background-color: #00264e;
+    cursor: default;
+}
+
+.section .transaction-form-div #edit-transaction-form input[type=submit] {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 1rem;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.section .transaction-form-div #edit-transaction-form input[type=submit]:hover {
+    background-color: #0056b3;
+}
+
+.section .transaction-form-div #edit-transaction-form input[type="submit"]:disabled {
+    color: #696969;
+    background-color: #00264e;
+    cursor: default;
+}
+
+.section .transaction-form-div #edit-transaction-form input {
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid #444444;
+    border-radius: 5px;
+    font-size: 16px;
+    color-scheme: dark;
+    background-color: #3b3b3b;
+    color: #f0f0f0;
+}
+
+.section .transaction-form-div #edit-transaction-form select {
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid #444444;
+    background-color: #3b3b3b;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #f0f0f0;
+}
+
+.section .transaction-form-div #edit-transaction-form label {
+    margin: 10px 0;
+}
+
+.section .transaction-form-div #edit-transaction-form input.ng-invalid.ng-touched,
+.section .transaction-form-div #edit-transaction-form select.ng-invalid.ng-touched {
+    border-color: #ff2121;
+}
+
+.mid-section-two {
+    display: grid;
+    grid-template-columns: 0.8fr 1fr;
+    gap: 15px;
+    color: #f0f0f0;
+    background-color: #2c2c2c;
+    border-radius: 10px;
+    padding: 10px;
+    /* align-items: start; */
+    justify-content: space-between !important;
+}
+
+.category .mid2-head-div {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 10px;
+}
+
+.category-btns {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, auto);
+    gap: 0.5rem;
+    align-items: stretch;
+    width: 100%;
+}
+
+.chart-reset-btn {
+    color: #af92ff;
+    background-color: #1e1e1e;
+    border: none;
+    border-radius: 5px;
+    width: 30px;
+    height: 30px;
+    transition: color 0.3s;
+}
+
+.category-btns button {
+    flex-grow: 1;
+    flex-shrink: 1;
+    padding-top: 0.7vw;
+    padding-bottom: 0.7vw;
+    color: #af92ff;
+    background-color: #1e1e1e;
+    border-radius: 5px;
+    border: none;
+    transition: color 0.3s;
+}
+
+.category-btns button i {
+    margin: 15px;
+}
+
+.chart-reset-btn:hover,
+.category-btns button:hover {
+    cursor: pointer;
+    background-color: #222222fd;
+}
+
+.mid-section-three {
+    background-color: #2c2c2c;
+    color: #f0f0f0;
+    border-radius: 10px;
+    padding: 0px 15px 15px;
+    max-height: 205px;
+}
+
+.mid-section-three .transaction-history-table {
+    display: grid;
+    overflow: auto;
+    width: 100%;
+    max-height: 145px;
+    border-radius: 8px;
+    overflow-y: scroll;
+}
+
+.transaction-history-table table {
+    border: 1px solid #2c2c2c;
+    border-collapse: collapse;
+    border-spacing: 0;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+}
+
+.transaction-history-table table {
+    height: 100%;
+    width: 100%;
+    table-layout: auto;
+    border-collapse: separate;
+    border-spacing: 0;
+    text-align: left;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.transaction-history-table th:first-child {
+    border-top-left-radius: 8px;
+}
+
+.transaction-history-table th:last-child {
+    border-top-right-radius: 8px;
+}
+
+.transaction-history-table td:first-child:last-of-type {
+    border-bottom-left-radius: 8px;
+}
+
+.transaction-history-table tr:last-child:last-of-type {
+    border-bottom-right-radius: 8px;
+}
+
+.transaction-history-table th,
+.transaction-history-table td {
+    border: 1px solid #2c2c2c;
+    padding: 5px;
+    color: #b3b2b2;
+    text-align: center;
+    background-color: #1e1e1e;
+    color: #b3b2b2;}
+
+.transaction-history-table::-webkit-scrollbar {
+    width: 8px;
+}
+
+.transaction-history-table::-webkit-scrollbar-track {
+    background: #1e1e1e;
+}
+
+.transaction-history-table::-webkit-scrollbar-thumb {
+    background: rgb(187, 187, 187);
+}
+
+.transaction-history-table .edt-trans-btn {
+    background-color: #1db954;
+    border-radius: 5px;
+    text-align: center;
+    align-content: center;
+    border: none;
+    padding: 5px;
+    height: 25.70px;
+    width: 25.70px;
+    transition: background-color 0.3s;
+}
+
+.transaction-history-table .edt-trans-btn:hover {
+    cursor: pointer;
+    background-color: #189b46;
+}
+
+.section .mid-section .mid-section-three .transaction-history-table .edt-trans-btn:active {
+    cursor: pointer;
+    background-color: #14813a;
+}
+
+.transaction-history-table .del-trans-btn {
+    background-color: #ec2b2b;
+    border-radius: 5px;
+    text-align: center;
+    align-content: center;
+    border: none;
+    padding: 5px;
+    height: 25.70px;
+    width: 25.70px;
+    transition: background-color 0.3s;
+}
+
+.transaction-history-table .del-trans-btn:hover {
+    cursor: pointer;
+    background-color: #ce2424;
+}
+
+.transaction-history-table .del-trans-btn:active {
+    cursor: pointer;
+    background-color: #b31e1e;
+}
+
+@media only screen and (max-width: 1080px) {
+    .section .mid-section-two {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+    }
+    .section .mid-section-two .category-btns {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+    }
+    .section .mid-section-two .canvas-div {
+        width: 60vw;
+        margin-top: 2em;
+        display: grid;
+        justify-content: end;
+    }
+}
+
+@media only screen and (max-width: 855px) {
+    .section .mid-section-two .canvas-div {
+        width: 85vw;
+        margin-top: 2em;
+        display: grid;
+        justify-content: end;
+    }
+}
+
+@media only screen and (max-width: 444px) {
+    .section .top-section .income-div #ttl-inc,
+    .section .top-section .expense-div #ttl-exp,
+    .section .top-section .balance-div #ttl-bln {
+        display: none;
+    }
+
+    .section .mid-section .mid-section-one #new-goal-btn label,
+    #new-bnkacc-btn label,
+    #new-bill-btn label,
+    #new-transaction-btn label {
+        font-size: smaller;
+    }
+
+    .section .mid-section .mid-section-two .category-btns button {
+        font-size: smaller;
+    }
+
+    .section .top-section .income-div,
+    .section .top-section .expense-div,
+    .section .top-section .balance-div {
+        font-size: smaller;
+    }
+}
+
+@media only screen and (max-width: 855px) {
+    .goal-form-div,
+    .acc-form-div,
+    .transaction-form-div {
+        width: 70%;
+    }
+}
+
+@media only screen and (max-width: 444px) {
+    table td {
+        font-size: x-small;
+    }
+
+    table th {
+        font-size: x-small;
+    }
+
+    table tr button {
+        font-size: x-small;
+    }
+
+    .edt-trans-btn,
+    .del-trans-btn {
+        padding: 1px !important;
+        width: 20px !important;
+        height: 20px !important;
+    }
+
+    .edt-trans-btn {
+        padding-bottom: 2px !important;
+    }
+
+    .goal-form-div,
+    .acc-form-div,
+    .transaction-form-div {
+        width: 70%;
+    }
+}

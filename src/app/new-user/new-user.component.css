@@ -1,0 +1,87 @@
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #1e1e1e;
+}
+
+.heading {
+    color: #f0f0f0;
+}
+
+.heading p a {
+    padding-left: 5px;
+    text-decoration: none;
+    color: #007bff;
+}
+
+.heading p a:hover {
+    color: #0056b3;
+}
+
+.reg-container {
+    background-color: #2c2c2c;
+    padding: 1.5rem;
+    padding-top: 0.5rem;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px #00000077;
+    max-width: 520px;
+    width: 100%;
+}
+
+.reg-container form label {
+    margin: 10px 0;
+}
+
+.form-divs {
+    display: flex;
+    flex-direction: column;
+}
+
+.reg-container form {
+    display: flex;
+    color: #f0f0f0;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 25px;
+}
+
+.reg-container input {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border: 1px solid #444444;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #f0f0f0;
+    background-color: #3b3b3b;
+}
+
+.reg-container input[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s;
+}
+
+.reg-container input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.reg-container input[type="submit"]:disabled {
+    color: #696969;
+    background-color: #00264e;
+    cursor: default;
+}
+
+#error-dsp {
+    color: #ff2121;
+    margin-top: 0;
+    margin-bottom: 0;
+    transition: opacity 0.3s;
+}
+
+input.ng-invalid.ng-touched {
+    border-color: #ff2121;
+}

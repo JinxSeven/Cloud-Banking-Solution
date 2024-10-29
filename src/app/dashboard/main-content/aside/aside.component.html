@@ -1,0 +1,149 @@
+<aside class="aside">
+    <div class="saving-goals-div">
+        <h4>Saving Goals:</h4>
+        @for (goal of loggedUserDashData.goals; track $index) {
+            @if (goal.contribution == goal.target) {
+                <div style="display: flex;justify-content: space-evenly; align-items: center;" class="goals-div">
+                    <p>{{goal.name}}</p>
+                    <progress style="height:30px;width: 20%;" class="goal-prog-bar" value="{{goal.contribution}}" max="{{goal.target}}"></progress>
+                    <p id="progressPercentage">{{goal.target}}₹</p>
+                    <i id="goal-indicator" class="fa-solid fa-square-check"></i>
+                    <button id="{{$index}}"
+                        class="goal-del-btn"
+                        (click)="deleteGoal($index)"
+                    >
+                        <i class="fa-solid fa-trash-can fa-lg"></i>
+                    </button>
+                </div>
+            } @else {
+                <div style="display: flex;justify-content: space-evenly; align-items: center;" class="goals-div">
+                    <p>{{goal.name}}</p>
+                    <progress style="height:30px;width: 20%;" class="goal-prog-bar" value="{{goal.contribution}}" max="{{goal.target}}"></progress>
+                    <p id="progressPercentage">{{((goal.contribution/goal.target)*100).toFixed(1)}}%</p>
+                    <button id="{{$index}}"
+                        class="goal-fund-btn"
+                        (click)="openEditGoal($index, overlay, editGoalPopup, editGoalForm)"
+                    >
+                        <i class="fa-solid fa-circle-dollar-to-slot fa-lg"></i>
+                    </button>
+                    <button id="{{$index}}"
+                        class="goal-del-btn"
+                        (click)="deleteGoal($index)"
+                    >
+                        <i class="fa-solid fa-trash-can fa-lg"></i>
+                    </button>
+                </div>
+            }
+        } @empty {
+            <div
+                id="zero-goals-div"
+                style="
+                    display: flex;
+                    justify-content: space-evenly;
+                    align-items: center;
+                "
+                class="goals-div"
+            >
+                <h3 style="color: #b3b2b2;">No goals to see here</h3>
+            </div>
+        }
+        <div class="overlay" id="overlay" #overlay></div>
+        <div class="goal-form-div" id="edit-goal-popup" #editGoalPopup>
+            <h2>{{editPopupGoalName}}</h2>
+            <button class="close-popup" id="close-goal-popup" (click)="closeGoalPopup(editGoalForm, overlay, editGoalPopup)">&times;</button>
+            <form action="" id="edit-goal-form"
+                (ngSubmit)="updateGoal(editGoalForm, overlay, editGoalPopup, goalCompPopup)"
+                #editGoalForm="ngForm"
+                >
+                <h4 style="font-weight: 500;" id="funds-on-goal">Contribution Status: {{editPopupGoalFund}} / {{editPopupGoalTrgt}}</h4>
+                <label>Edit goal name</label>
+                <input
+                    placeholder="Goal name"
+                    type="text"
+                    id="edit-goal-name-inp"
+                    name="modGoalName"
+                    maxlength="10"
+                    ngModel
+                    required
+                />
+                <label>Edit goal target</label>
+                <input
+                    placeholder="Goal target"
+                    type="number"
+                    id="edit-goal-trgt-inp"
+                    name="modGoalTrgt"
+                    pattern="[0-9]+"
+                    ngModel
+                    required
+                    min="{{editPopupGoalFund}}"
+                />
+                <label>Add Contribution amount</label>
+                <input
+                    placeholder="Contribution amount"
+                    id="fund-goal-inp"
+                    type="number"
+                    ngModel
+                    name="fundGoal"
+                    pattern="[0-9]+"
+                    min="0"
+                    max="{{editPopupGoalBlnc}}"
+                />
+                <input id="save-goal-btn" type="submit" value="Update Goal"
+                    [disabled]="(editGoalForm.invalid || (editGoalForm.form.get('initFund')?.touched &&
+                    ((loggedUserDashData.income - loggedUserDashData.expense < editGoalForm.form.get('initFund')?.value)) ||
+                    (editGoalForm.form.get('initFund')?.value > editGoalForm.form.get('goalTrgt')?.value)) || (checkDuplicateGoals(editGoalForm, idx!)))"
+                >
+                <p class="popup-errors" id="new-goal-error">
+                    @if (
+                        editGoalForm.form.get('modGoalName')?.touched &&
+                        editGoalForm.form.get('modGoalName')?.errors?.['required']
+                    ) {
+                        Goal name can't be empty!
+                    } @else if (
+                        editGoalForm.form.get('modGoalName')?.dirty &&
+                        (checkDuplicateGoals(editGoalForm, idx!))
+                    ) {
+                        Duplicate names not allowed!
+                    } @else if (
+                        editGoalForm.form.get('modGoalTrgt')?.touched &&
+                        editGoalForm.form.get('modGoalTrgt')?.errors?.['required']
+                    ) {
+                        Goal target cant be empty!
+                    } @else if (
+                        editGoalForm.form.get('modGoalTrgt')?.touched &&
+                        editGoalForm.form.get('modGoalTrgt')?.errors?.['pattern'] ||
+                        editGoalForm.form.get('modGoalTrgt')?.errors?.['min']
+                    ) {
+                        Goal target less than contribution!
+                    } @else if (
+                        editGoalForm.form.get('fundGoal')?.dirty && ((editGoalForm.form.get('fundGoal')?.value >
+                        (loggedUserDashData.income - loggedUserDashData.expense)) ||
+                        (editGoalForm.form.get('fundGoal')?.errors?.['max']))
+                    ) {
+                        contribution can't exceed balance | target!
+                    } @else if (
+                        editGoalForm.form.get('fundGoal')?.dirty &&
+                        editGoalForm.form.get('fundGoal')?.errors?.['pattern'] ||
+                        editGoalForm.form.get('fundGoal')?.errors?.['min']
+                    ) {
+                        Contribution must be greater than 0!
+                    } @else {
+                        {{errorOut}}
+                    }
+                </p>
+            </form>
+        </div>
+        <div class="goal-form-div goal-comp-div" id="goal-complete-popup" #goalCompPopup>
+            <h2 style="margin-top: 8px" id="goal-complete-name">{{editPopupGoalName}}</h2>
+            <button class="close-popup" id="goal-complete-close-popup"
+            (click)="closeGoalPopup(editGoalForm, overlay, goalCompPopup)"
+            >
+                &times;
+            </button>
+            <h4 style="display: inline">Goal's target 100% achived</h4>
+            <span style="padding-left: 10px; font-size: 18px"
+                ><i class="fa-solid fa-award fa-lg"></i>
+            </span>
+        </div>
+    </div>
+</aside>

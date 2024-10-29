@@ -1,0 +1,86 @@
+<div class="main">
+    <div class="reg-container">
+        <div class="heading">
+            <h1 style="text-align: center; font-size: 42px">
+                Cloud Banking Solutions
+            </h1>
+            <h2>Sign Up</h2>
+            <p>
+                Existing user?<span
+                    ><a href="/">Sign In</a></span
+                >
+            </p>
+        </div>
+        <form (ngSubmit)="onRegister(regForm)" #regForm="ngForm">
+            <div class="form-divs">
+                <label class="email-lbl">Enter user name</label>
+                <input id="user-name-inp" type="text" placeholder="User Name" ngModel name="username" required />
+            </div>
+            <div class="form-divs">
+                <label class="email-lbl">Enter email address</label>
+                <input
+                    id="email-inp"
+                    type="email"
+                    placeholder="Email Address"
+                    name="email"
+                    ngModel
+                    pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
+                    required
+                />
+            </div>
+            <div class="form-divs">
+                <label class="pass-lbl">Enter your password</label>
+                <input id="pass-inp" placeholder="Password" type="password" ngModel required minlength="8" name="password" />
+            </div>
+            <div class="form-divs">
+                <label class="pass-lbl">Confirm your password</label>
+                <input
+                    id="cnfm-pass-inp"
+                    placeholder="Password"
+                    type="password"
+                    name="cnfmpass"
+                    ngModel
+                    minlength="8"
+                    required
+                />
+            </div>
+            <input id="sign-up-btn" type="submit" value="Sign Up"
+                [disabled]="(regForm.invalid ||
+                (regForm.form.get('cnfmpass')?.value !== regForm.form.get('password')?.value))"
+                />
+        </form>
+        <p id="error-dsp">
+            @if (
+                regForm.form.get('username')?.touched &&
+                regForm.form.get('username')?.errors?.['required']
+            ) {
+                Username can't be empty!
+            } @else if (
+                regForm.form.get('email')?.touched &&
+                regForm.form.get('email')?.errors?.['required']
+            ) {
+                Email can't be empty!
+            } @else if (regForm.form.get('email')?.errors?.['pattern']) {
+                Email isn't valid!
+            } @else if (
+                regForm.form.get('password')?.touched &&
+                regForm.form.get('password')?.errors?.['required']
+            ) {
+                Password can't be empty!
+            } @else if (regForm.form.get('password')?.errors?.['minlength'] && regForm.form.get('password')?.dirty) {
+                Password < than 8 characters!
+            } @else if (
+                regForm.form.get('cnfmpass')?.touched &&
+                regForm.form.get('cnfmpass')?.errors?.['required']
+            ) {
+                Confirm password can't be empty!
+            } @else if (
+                regForm.form.get('cnfmpass')?.value != regForm.form.get('password')?.value
+            ) {
+                Confirm password doesn't match!
+            } @else {
+                {{errorOut}}
+            }
+        </p>
+    </div>
+</div>

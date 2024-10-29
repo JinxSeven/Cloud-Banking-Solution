@@ -1,0 +1,533 @@
+<section class="section">
+    <div class="top-section">
+        <div class="income-div" id="income-div-id">
+            <i class="fa-solid fa-circle-down"></i>
+            <label id="ttl-inc">Total Income:</label>
+            <label id="total-income-dsp">{{loggedUserDashData.income}}₹</label>
+        </div>
+        <div class="expense-div" id="expense-div-id">
+            <i class="fa-solid fa-circle-up"></i>
+            <label id="ttl-exp">Total Expense:</label>
+            <label id="total-expense-dsp">{{loggedUserDashData.expense}}₹</label>
+        </div>
+        <div class="balance-div" id="balance-div-id">
+            <i class="fa-solid fa-hand-holding-dollar"></i>
+            <label id="ttl-bln">Total Balance:</label>
+            <label id="total-balance-dsp">
+                {{loggedUserDashData.income - loggedUserDashData.expense}}₹
+            </label>
+        </div>
+    </div>
+    <div class="mid-section">
+        <div class="mid-section-one">
+            <button id="new-goal-btn" (click)="openNewGoalPopup(overlay, newGoalPopup)">
+                <div><i class="fa-solid fa-bullseye fa-2xl"></i></div>
+                <label>+ Saving Goal</label>
+            </button>
+            <button id="new-transaction-btn" (click)="openTransactPopup(overlay, newTransactPopup, null, editTransactForm)">
+                <div><i class="fa-solid fa-money-bill-transfer fa-2xl"></i></div>
+                <label>+ Transaction</label>
+            </button>
+            <button id="new-bnkacc-btn" (click)="openNewAccPopup(overlay, newAccPopup)">
+                <div><i class="fa-solid fa-building-columns fa-2xl"></i></div>
+                <label>+ Bank Account</label>
+            </button>
+        </div>
+    </div>
+    <div class="mid-section-two">
+        <div class="category">
+            <div class="mid2-head-div">
+                <h3 id="visual-exp">Visualize expense by category</h3>
+                <button class="chart-reset-btn" id="chart-filter-reset"
+                    (click)="filterChartReset()"
+                >
+                    <i class="fa-solid fa-arrow-rotate-right"></i>
+                </button>
+            </div>
+            <div class="category-btns">
+                <button id="chart-filter-entertain"
+                    (click)="filterChartEntertain()"
+                >
+                    <div><i class="fa-solid fa-film fa-2xl"></i></div>
+                    <label>Entertainment</label>
+                </button>
+                <button id="chart-filter-health"
+                    (click)="filterChartHealth()"
+                >
+                    <div><i class="fa-solid fa-briefcase-medical fa-2xl"></i></div>
+                    <label>Health</label>
+                </button>
+                <button id="chart-filter-shopping"
+                    (click)="filterChartShopping()"
+                >
+                    <div><i class="fa-solid fa-bag-shopping fa-2xl"></i></div>
+                    <label>Shopping</label>
+                </button>
+                <button id="chart-filter-travel"
+                    (click)="filterChartTravel()"
+                >
+                    <div><i class="fa-solid fa-plane fa-2xl"></i></div>
+                    <label>Travel</label>
+                </button>
+                <button id="chart-filter-education"
+                    (click)="filterChartEducation()"
+                >
+                    <div><i class="fa-solid fa-graduation-cap fa-2xl"></i></div>
+                    <label>Education</label>
+                </button>
+                <button id="chart-filter-other"
+                    (click)="filterChartOther()"
+                >
+                    <div><i class="fa-solid fa-o fa-2xl"></i></div>
+                    <label>Other</label>
+                </button>
+            </div>
+        </div>
+        <div class="canvas-div">
+            <canvas
+                id="expense-chart"
+                style="display: grid"
+                aria-label="Visual your expense"
+                #expenceChart
+            ></canvas>
+        </div>
+    </div>
+    <div class="mid-section-three">
+        <div class="source-filter">
+            <h3>Transaction History</h3>
+            <form>
+                <select ngModel (change)="loadAptTransactions()" name="sel">
+                    <option></option>
+                </select>
+            </form>
+        </div>
+        <div class="transaction-history-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Income/Expense</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Source/purpose</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="table-tbody">
+                @for (transact of loggedUserDashData.transactions; track $index) {
+                    @if (transact.category != "savings") {
+                        <tr>
+                            <td>{{transact.type}}</td>
+                            <td>{{transact.amount}}₹</td>
+                            <td>{{transact.date}}</td>
+                            <td>{{transact.category}}</td>
+                            <td><button id="{{$index}}" class="edt-trans-btn"
+                                (click)="openTransactPopup(overlay, editTransactPopup, $index, editTransactForm)"
+                            ><i class="fa-solid fa-pen-to-square fa-lg"></i></button></td>
+                            <td><button id="{{$index}}" class="del-trans-btn"
+                                (click)="delTransaction($index)"
+                            ><i class="fa-solid fa-trash-can fa-lg"></i></button></td>
+                        </tr>
+                    }
+                } @empty {
+                    <div
+                        id="zero-transaction-history"
+                        style="
+                            border-radius: 10px;
+                            margin-top: 20px;
+                            display: flex;
+                            background-color: #1e1e1e;
+                            justify-content: space-evenly;
+                            align-items: center;
+                            font-size: 15px;
+                        "
+                    >
+                    <h3 style="color: #b3b2b2;">
+                        Add transactions to see here
+                    </h3>
+                </div>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="overlay" id="overlay" #overlay></div>
+    <div class="goal-form-div" id="new-goal-popup" #newGoalPopup>
+        <h2>New Goal</h2>
+        <button class="close-popup" id="close-goal-popup" (click)="closeNewGoalPopup(newGoalForm, overlay, newGoalPopup)">&times;</button>
+        <form action="" id="new-goal-form"
+            (ngSubmit)="addNewGoal(
+                newGoalForm, overlay, newGoalPopup
+                )"
+            #newGoalForm="ngForm"
+            >
+            <label>Set goal name</label>
+            <input
+                placeholder="Goal name"
+                type="text"
+                id="new-goal-name-inp"
+                name="goalName"
+                maxlength="10"
+                ngModel
+                required
+            />
+            <label>Set goal target</label>
+            <input
+                placeholder="Goal target"
+                type="number"
+                id="new-goal-trgt-inp"
+                name="goalTrgt"
+                pattern="[0-9]+"
+                ngModel
+                required
+                min="1"
+            />
+            <label>Add initial contribution (not mandatory)</label>
+            <input
+                placeholder="Initial contribution"
+                type="number"
+                id="new-goal-init-inp"
+                ngModel
+                name="initFund"
+                pattern="[0-9]+"
+                min="0"
+                />
+            <input id="save-goal-btn" type="submit" value="Save Goal"
+                [disabled]="(newGoalForm.invalid || (newGoalForm.form.get('initFund')?.touched &&
+                ((loggedUserDashData.income - loggedUserDashData.expense < newGoalForm.form.get('initFund')?.value)) ||
+                (newGoalForm.form.get('initFund')?.value > newGoalForm.form.get('goalTrgt')?.value)) || (checkDuplicateGoals(newGoalForm)))"
+            >
+            <p class="popup-errors" id="new-goal-error">
+                @if (
+                    newGoalForm.form.get('goalName')?.touched &&
+                    newGoalForm.form.get('goalName')?.errors?.['required']
+                ) {
+                    Goal name can't be empty!
+                } @else if (
+                    newGoalForm.form.get('goalName')?.dirty &&
+                    (checkDuplicateGoals(newGoalForm))
+                ) {
+                    Duplicate names not allowed!
+                } @else if (
+                    newGoalForm.form.get('goalTrgt')?.touched &&
+                    newGoalForm.form.get('goalTrgt')?.errors?.['required']
+                ) {
+                    Goal target cant be empty!
+                } @else if (
+                    newGoalForm.form.get('goalTrgt')?.touched &&
+                    newGoalForm.form.get('goalTrgt')?.errors?.['pattern'] ||
+                    newGoalForm.form.get('goalTrgt')?.errors?.['min']
+                ) {
+                    Goal target can only be a +ve number!
+                } @else if (
+                    newGoalForm.form.get('initFund')?.touched && (newGoalForm.form.get('initFund')?.value >
+                    (loggedUserDashData.income - loggedUserDashData.expense)) || (newGoalForm.form.get('initFund')?.value > newGoalForm.form.get('goalTrgt')?.value)
+                ) {
+                    contribution can't exceed balance | target!
+                } @else if (
+                    newGoalForm.form.get('initFund')?.touched &&
+                    newGoalForm.form.get('initFund')?.errors?.['pattern'] ||
+                    newGoalForm.form.get('initFund')?.errors?.['min']
+                ) {
+                    contribution can only be a +ve number!
+                } @else {
+                    {{errorOut}}
+                }
+            </p>
+        </form>
+    </div>
+    <div class="transaction-form-div" id="new-transaction-popup" #newTransactPopup>
+        <h2>New Transaction</h2>
+        <button class="close-popup" id="close-transaction-popup"
+        (click)="closeTransactionPopup(newTransactForm, overlay, newTransactPopup)"
+        >
+            &times;
+        </button>
+        <form action="" id="new-transaction-form" #newTransactForm="ngForm"
+            (submit)="addNewTransaction(newTransactForm, overlay, newTransactPopup)"
+        >
+            <label>Select transaction type</label>
+            <select id="new-transaction-type-select"
+                (change)="loadAptCategories(newTransactForm)"
+                name="transactTypeSel"
+                required
+                ngModel
+            >
+                <option
+                    style="font-weight: 600; font-size: 17px"
+                    value="expense"
+                >
+                    Expense
+                </option>
+                <option
+                    style="font-weight: 600; font-size: 17px"
+                    value="income"
+                >
+                    Income
+                </option>
+            </select>
+            <label>Enter transaction amount</label>
+            <input
+                placeholder="Transaction amount"
+                type="text"
+                id="new-transaction-amt-inp"
+                name="transactAmt"
+                ngModel
+                required
+                pattern="[0-9]+"
+                min="1"
+            />
+            <label>Select transaction date</label>
+            <input type="date" id="new-transaction-date-inp" name="transactDate" ngModel required/>
+            <label>Select transaction source/purpose</label>
+            <select id="new-transaction-purpose-select" name="transactCateg" ngModel required>
+                @for (option of arrOfOptions; track option) {
+                    <option
+                        style="font-weight: 600; font-size: 17px"
+                        value="{{option}}"
+                    >
+                        {{option}}
+                    </option>
+                }
+            </select>
+            <input id="save-transaction-btn" value="Save Transaction" type="submit"
+                [disabled]="newTransactForm.invalid"
+            >
+            <span class="popup-errors" id="new-transact-error">
+                @if (
+                    newTransactForm.form.get("transactTypeSel")?.touched &&
+                    (newTransactForm.form.get("transactTypeSel")?.value == "" ||
+                    newTransactForm.form.get("transactTypeSel")?.value == null)
+                ) {
+                    Transaction type can't be empty!
+                } @else if (
+                    newTransactForm.form.get("transactAmt")?.touched &&
+                    newTransactForm.form.get("transactAmt")?.errors?.['required']
+                ) {
+                    Transaction amount can't be empty!
+                } @else if (
+                    newTransactForm.form.get("transactAmt")?.touched &&
+                    (newTransactForm.form.get("transactAmt")?.errors?.['pattern'] ||
+                    newTransactForm.form.get("transactAmt")?.errors?.['min'])
+                ) {
+                    Transaction can only be a +ve number!
+                } @else if (
+                    newTransactForm.form.get("transactAmt")?.touched &&
+                    (newTransactForm.form.get("transactTypeSel")?.value == "expense" &&
+                    (newTransactForm.form.get("transactAmt")?.value > (loggedUserDashData.income - loggedUserDashData.expense)))
+                ) {
+                    Expense can't exceed balance!
+                } @else if (
+                    newTransactForm.form.get("transactDate")?.touched &&
+                    newTransactForm.form.get("transactDate")?.errors?.['required']
+                ) {
+                    A valid date must be selected!
+                } @else if (
+                    newTransactForm.form.get("transactCateg")?.touched &&
+                    (newTransactForm.form.get("transactTypeSel")?.value == "" ||
+                    newTransactForm.form.get("transactTypeSel")?.value == null)
+                ) {
+                    Transaction category can't be empty!
+                } @else {
+                    {{errorOut}}
+                }
+            </span>
+        </form>
+    </div>
+    <div class="acc-form-div" id="new-acc-popup" #newAccPopup>
+        <h2>New Account</h2>
+        <button class="close-popup" id="close-goal-popup" (click)="closeNewAccPopup(newAccForm, overlay, newAccPopup)">&times;</button>
+        <form action="" id="new-acc-form"
+            (ngSubmit)="addNewAccount
+                (newGoalForm, overlay, newAccPopup)"
+            #newAccForm="ngForm"
+            >
+            <label>Enter account name</label>
+            <input
+                placeholder="Account name"
+                type="text"
+                id="new-acc-name-inp"
+                name="accName"
+                maxlength="25"
+                ngModel
+                required
+            />
+            <label>Enter account number</label>
+            <input
+                placeholder="Account number"
+                type="number"
+                id="new-acc-num-inp"
+                name="accNumber"
+                pattern="[0-9]+"
+                ngModel
+                required
+                minlength="9"
+                maxlength="18"
+            />
+            <label>Enter IFSC Code</label>
+            <input
+                placeholder="IFSC code"
+                type="text"
+                id="new-acc-ifsc-inp"
+                ngModel
+                required
+                name="accIfsc"
+                pattern="^[A-Z]{4}\d{7}$"
+            />
+            <label>Enter Account Balance</label>
+            <input
+                placeholder="Account balance"
+                type="text"
+                id="new-acc-blnc-inp"
+                ngModel
+                required
+                name="accBalance"
+                pattern="[0-9]+"
+                min="100000"
+            />
+            <input id="save-acc-btn" type="submit" value="Save Account"
+                [disabled]="newAccForm.invalid"
+            >
+            <p class="popup-errors" id="new-acc-error">
+                @if (
+                    newAccForm.form.get('accName')?.touched &&
+                    newAccForm.form.get('accName')?.errors?.['required']
+                ) {
+                    Account name can't be empty!
+                } @else if (
+                    newAccForm.form.get('accName')?.dirty &&
+                    (checkDuplicateGoals(newGoalForm))
+                ) {
+                    Duplicate names not allowed!
+                } @else if (
+                    newAccForm.form.get('accNumber')?.touched &&
+                    newAccForm.form.get('accNumber')?.errors?.['required']
+                ) {
+                    Account number cant be empty!
+                } @else if (
+                    newAccForm.form.get('accNumber')?.touched &&
+                    newAccForm.form.get('accNumber')?.errors?.['minlength']
+                ) {
+                    Account number too short!
+                } @else if (
+                    newAccForm.form.get('accNumber')?.touched &&
+                    newAccForm.form.get('accNumber')?.errors?.['maxlength']
+                ) {
+                    Account number too long!
+                } @else if (
+                    newAccForm.form.get('accIfsc')?.touched &&
+                    newAccForm.form.get('accIfsc')?.errors?.['required'] ||
+                    newAccForm.form.get('accIfsc')?.errors?.['pattern']
+                ) {
+                    IFSC code invalid!
+                } @else if (
+                    newAccForm.form.get('accBalance')?.touched &&
+                    newAccForm.form.get('accBalance')?.errors?.['pattern'] ||
+                    newAccForm.form.get('accBalance')?.errors?.['min']
+                ) {
+                    Account Balance can only be a +ve number!
+                } @else {
+                    {{errorOut}}
+                }
+            </p>
+        </form>
+    </div>
+    <div class="transaction-form-div" id="edit-transaction-popup" #editTransactPopup>
+        <h2>Edit Transaction</h2>
+        <button class="close-popup" id="close-transaction-popup"
+            (click)="closeTransactionPopup(editTransactForm, overlay, editTransactPopup)"
+        >
+            &times;
+        </button>
+        <form action="" id="edit-transaction-form" #editTransactForm="ngForm"
+            (submit)="updateTransaction(editTransactForm, overlay, editTransactPopup)"
+        >
+            <label>Edit transaction type</label>
+            <select id="edit-transaction-type-select"
+                (change)="loadAptCategories(editTransactForm)"
+                name="transactTypeSel"
+                required
+                ngModel
+            >
+                <option
+                    style="font-weight: 600; font-size: 17px"
+                    value="expense"
+                >
+                    Expense
+                </option>
+                <option
+                    style="font-weight: 600; font-size: 17px"
+                    value="income"
+                >
+                    Income
+                </option>
+            </select>
+            <label>Edit transaction amount</label>
+            <input
+                placeholder="Transaction amount"
+                type="text"
+                id="edit-transaction-amt-inp"
+                name="transactAmt"
+                ngModel
+                required
+                pattern="[0-9]+"
+                min="1"
+            />
+            <label>Edit transaction date</label>
+            <input type="date" id="edit-transaction-date-inp" name="transactDate" ngModel required/>
+            <label>Edit transaction source/purpose</label>
+            <select id="edit-transaction-purpose-select" name="transactCateg" ngModel required>
+                @for (option of arrOfOptions; track option) {
+                    <option
+                        style="font-weight: 600; font-size: 17px"
+                        value="{{option}}"
+                    >
+                        {{option}}
+                    </option>
+                }
+            </select>
+            <input id="edit-transaction-btn" value="Update Transaction" type="submit"
+                [disabled]="editTransactForm.invalid"
+            >
+            <span class="popup-errors" id="new-transact-error">
+                @if (
+                    editTransactForm.form.get("transactTypeSel")?.touched &&
+                    (editTransactForm.form.get("transactTypeSel")?.value == "" ||
+                    editTransactForm.form.get("transactTypeSel")?.value == null)
+                ) {
+                    Transaction type can't be empty!
+                } @else if (
+                    editTransactForm.form.get("transactAmt")?.touched &&
+                    editTransactForm.form.get("transactAmt")?.errors?.['required']
+                ) {
+                    Transaction amount can't be empty!
+                } @else if (
+                    editTransactForm.form.get("transactAmt")?.touched &&
+                    (editTransactForm.form.get("transactAmt")?.errors?.['pattern'] ||
+                    editTransactForm.form.get("transactAmt")?.errors?.['min'])
+                ) {
+                    Transaction can only be a +ve number!
+                } @else if (
+                    editTransactForm.form.get("transactAmt")?.touched &&
+                    (editTransactForm.form.get("transactTypeSel")?.value == "expense" &&
+                    (editTransactForm.form.get("transactAmt")?.value > (loggedUserDashData.income - loggedUserDashData.expense)))
+                ) {
+                    Expense can't exceed balance!
+                } @else if (
+                    editTransactForm.form.get("transactDate")?.touched &&
+                    editTransactForm.form.get("transactDate")?.errors?.['required']
+                ) {
+                    A valid date must be selected!
+                } @else if (
+                    editTransactForm.form.get("transactCateg")?.touched &&
+                    (editTransactForm.form.get("transactTypeSel")?.value == "" ||
+                    editTransactForm.form.get("transactTypeSel")?.value == null)
+                ) {
+                    Transaction category can't be empty!
+                } @else {
+                    {{errorOut}}
+                }
+            </span>
+        </form>
+    </div>
+</section>
