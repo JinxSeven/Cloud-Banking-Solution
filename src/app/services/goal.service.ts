@@ -51,7 +51,7 @@ export class GoalService {
                 amount: newGoal.contribution,
                 date: date2Day,
                 category: "savings",
-                source: 420
+                toOrFrom: 777
             }
             this.loggedUserDashData.transactions.push(newTransaction);
             this.loggedUserDashData.expense += newTransaction.amount;
@@ -78,7 +78,7 @@ export class GoalService {
                 amount: parseInt(editGoalForm.form.get('fundGoal')?.value),
                 date: date2Day,
                 category: "savings",
-                source: 420
+                toOrFrom: 420
             }
             this.loggedUserDashData.transactions.push(newTransaction);
             this.loggedUserDashData.expense += newTransaction.amount;

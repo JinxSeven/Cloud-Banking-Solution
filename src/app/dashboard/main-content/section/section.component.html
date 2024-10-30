@@ -95,9 +95,20 @@
     <div class="mid-section-three">
         <div class="source-filter">
             <h3>Transaction History</h3>
-            <form>
-                <select ngModel (change)="loadAptTransactions()" name="sel">
-                    <option></option>
+            <form #transactFilterForm="ngForm">
+                <select ngModel
+                    name="accSel"
+                    (change)="loadAptTransactions
+                    (transactFilterForm.controls['accSel'].value)"
+                >
+                    <option value=""></option>
+                    @for (acc of arrOfAccounts; track $index) {
+                        <option
+                            value="{{acc.accno}}"
+                        >{{acc.accname}}</option>
+                    } @empty {
+                        <option>No account on file</option>
+                    }
                 </select>
             </form>
         </div>
@@ -114,7 +125,7 @@
                     </tr>
                 </thead>
                 <tbody id="table-tbody">
-                @for (transact of loggedUserDashData.transactions; track $index) {
+                @for (transact of transactionsToShow; track $index) {
                     @if (transact.category != "savings") {
                         <tr>
                             <td>{{transact.type}}</td>
@@ -142,9 +153,7 @@
                             font-size: 15px;
                         "
                     >
-                    <h3 style="color: #b3b2b2;">
-                        Add transactions to see here
-                    </h3>
+                    <h3 style="color: #b3b2b2;">Add transactions to see here</h3>
                 </div>
                 }
                 </tbody>
@@ -279,8 +288,25 @@
             />
             <label>Select transaction date</label>
             <input type="date" id="new-transaction-date-inp" name="transactDate" ngModel required/>
+            <label>Make transaction to/from</label>
+            <select id="new-transaction-purpose-select"
+                name="transactToOrFrom"
+                ngModel required>
+                @for (acc of arrOfAccounts; track acc) {
+                    <option
+                        style="font-weight: 600; font-size: 17px"
+                        value="{{acc.accno}}"
+                    >
+                        {{acc.accno}}
+                    </option>
+                } @empty {
+                    <option>No account on file</option>
+                }
+            </select>
             <label>Select transaction source/purpose</label>
-            <select id="new-transaction-purpose-select" name="transactCateg" ngModel required>
+            <select id="new-transaction-purpose-select"
+                name="transactCateg"
+                ngModel required>
                 @for (option of arrOfOptions; track option) {
                     <option
                         style="font-weight: 600; font-size: 17px"
@@ -324,11 +350,17 @@
                     A valid date must be selected!
                 } @else if (
                     newTransactForm.form.get("transactCateg")?.touched &&
-                    (newTransactForm.form.get("transactTypeSel")?.value == "" ||
-                    newTransactForm.form.get("transactTypeSel")?.value == null)
+                    (newTransactForm.form.get("transactCateg")?.value == "" ||
+                    newTransactForm.form.get("transactCateg")?.value == null)
                 ) {
                     Transaction category can't be empty!
-                } @else {
+                } @else if (
+                    newTransactForm.form.get("transactToOrFrom")?.touched &&
+                    (newTransactForm.form.get("transactToOrFrom")?.value == "" ||
+                    newTransactForm.form.get("transactToOrFrom")?.value == null)
+                ) {
+                    Transaction account must be selected!
+                }@else {
                     {{errorOut}}
                 }
             </span>
@@ -338,8 +370,9 @@
         <h2>New Account</h2>
         <button class="close-popup" id="close-goal-popup" (click)="closeNewAccPopup(newAccForm, overlay, newAccPopup)">&times;</button>
         <form action="" id="new-acc-form"
-            (ngSubmit)="addNewAccount
-                (newGoalForm, overlay, newAccPopup)"
+            (ngSubmit)="addNewAccount(
+            newAccForm, overlay, newAccPopup
+            )"
             #newAccForm="ngForm"
             >
             <label>Enter account name</label>
@@ -425,7 +458,7 @@
                     newAccForm.form.get('accBalance')?.errors?.['pattern'] ||
                     newAccForm.form.get('accBalance')?.errors?.['min']
                 ) {
-                    Account Balance can only be a +ve number!
+                    Account balance can only be a +ve number!
                 } @else {
                     {{errorOut}}
                 }

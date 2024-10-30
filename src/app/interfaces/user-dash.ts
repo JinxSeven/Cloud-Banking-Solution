@@ -13,7 +13,7 @@ export interface Transaction {
     amount: number;
     date: string;
     category: string;
-    source: number;
+    toOrFrom: number;
 }
 
 export interface Goal {

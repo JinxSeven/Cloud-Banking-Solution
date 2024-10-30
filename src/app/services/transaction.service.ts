@@ -15,7 +15,6 @@ export class TransactionService {
     loggedIndx: number = this.userService.getLoggedIndx();
     loggedUserDashData: UserDash = this.userDashData[this.loggedIndx];
 
-
     updateDashBoardData() {
         this.userDashData = this.userService.getUserDashData();
         this.loggedIndx = this.userService.getLoggedIndx();
@@ -69,7 +68,7 @@ export class TransactionService {
             amount: parseInt(newTransactForm.form.get('transactAmt')?.value),
             category: newTransactForm.form.get('transactCateg')?.value,
             date: newTransactForm.form.get('transactDate')?.value,
-            source: 420
+            toOrFrom: newTransactForm.form.get('transactToOrFrom')?.value
         };
         this.loggedUserDashData.transactions.push(newTransaction);
         if (newTransaction.type === "expense") {
