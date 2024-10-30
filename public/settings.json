@@ -1,0 +1,78 @@
+{
+    "emmet.triggerExpansionOnTab": true,
+    "git.autofetch": true,
+    "git.enableSmartCommit": true,
+    "workbench.iconTheme": "dobri-theme-icons",
+    "editor.cursorBlinking": "smooth",
+    "editor.cursorSmoothCaretAnimation": "on",
+    "editor.smoothScrolling": true,
+    "emmet.useInlineCompletions": true,
+    "cmake.configureOnOpen": true,
+    "cmake.debugConfig": {},
+    "C_Cpp.autocompleteAddParentheses": true,
+    "C_Cpp.default.compilerPath": "${default}",
+    "C_Cpp.intelliSenseUpdateDelay": 500,
+    // "editor.fontWeight": "normal",
+    "editor.fontVariations": false,
+    // "editor.fontLigatures": true,
+    "editor.tokenColorCustomizations": {
+        "textMateRules": [
+            {
+                "scope": [
+                    //following will be in italic (=FlottFlott)
+                    "comment"
+                ],
+                "settings": {
+                    "fontStyle": ""
+                }
+            },
+            {
+                "scope": [
+                    //following will be excluded from italics (VSCode has some defaults for italics)
+                    "invalid",
+                    "keyword.operator",
+                    "constant.numeric.css",
+                    "keyword.other.unit.px.css",
+                    "constant.numeric.decimal.js",
+                    "constant.numeric.json"
+                ],
+                "settings": {
+                    "fontStyle": ""
+                }
+            }
+        ]
+    },
+    // "apc.font.family": "Agave",
+    // "apc.monospace.font.family": "Agave",
+    "editor.fontLigatures": "true",
+    "accessibility.dimUnfocused.enabled": false,
+    "workbench.colorTheme": "Dobri Next -C03- Cupcake",
+    "debug.console.fontSize": 15,
+    "scm.inputFontSize": 14,
+    "editor.wordWrap": "on",
+    "chat.editor.fontSize": 15,
+    "terminal.integrated.fontFamily": "'Agave', 'CozetteVector', 'CaskaydiaCove NFM','Cascadia Mono NF', 'Fira Code Retina', 'MonoLisa Trial', Consolas, 'Courier New', monospace",
+    "editor.fontFamily": "'JetBrains Mono NL', 'mononoki', 'Agave', 'CozetteVector', 'Cascadia Mono PL', 'Dank Mono', 'Fira Code Retina', 'Hack', 'CaskaydiaCove NFM', 'MonoLisa Trial', monospace, 'Cascadia Code NF'",
+    "markdown-preview-enhanced.previewTheme": "atom-dark.css",
+    "markdown-preview-enhanced.codeBlockTheme": "atom-dark.css",
+    "markdown-preview-enhanced.revealjsTheme": "blood.css",
+    "redhat.telemetry.enabled": true,
+    "editor.fontWeight": "380", // Light
+    // "editor.fontWeight": "200", // Regular
+    // "editor.fontWeight": "350", // Retina !! Only works with FiraCode-VF.ttf installed, see below when using separated font files (the normal case).
+    // "editor.fontWeight": "100", // Medium
+    // "editor.fontWeight": "350",
+    "editor.fontSize": 20,
+    "terminal.integrated.fontSize": 17,
+    "jdk.jdkhome": "c:\\Program Files\\Eclipse Adoptium\\jdk-21.0.3.9-hotspot",
+    "RainbowBrackets.depreciation-notice": false,
+    "files.autoSave": "afterDelay",
+    "liveServer.settings.CustomBrowser": "chrome",
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "window.density.editorTabHeight": "compact" // Bold
+}
