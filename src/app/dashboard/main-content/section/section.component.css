@@ -487,6 +487,21 @@
     max-height: 205px;
 }
 
+.source-filter {
+    display: flex;
+    justify-content: space-between;
+}
+
+.source-filter select {
+    margin-top: 1rem;
+    padding: 0.3rem;
+    border: 1px solid #444444;
+    background-color: #3b3b3b;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #f0f0f0;
+}
+
 .mid-section-three .transaction-history-table {
     display: grid;
     overflow: auto;

@@ -2,7 +2,7 @@ import { AccountService } from './../../../services/account.service';
 import { Component, HostListener, inject } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { UserService } from '../../../services/user.service';
-import { UserDash } from '../../../interfaces/user-dash';
+import { Account, Transaction, UserDash } from '../../../interfaces/user-dash';
 import { GoalService } from '../../../services/goal.service';
 import { TransactionService } from '../../../services/transaction.service';
 import { Chart } from 'chart.js/auto';
@@ -28,10 +28,14 @@ export class SectionComponent {
 
     errorOut: string = "‎";
     arrOfOptions: string[] = this.transactService.returnAptCategories("expense");
+    arrOfAccounts: Account[] = this.accountService.updateAccountsArr();
     expenseChart: Chart | null = null;
     idx: number | null = null;
+    transactionsToShow: Transaction[] = this.loggedUserDashData.transactions;
 
-    constructor() {}
+    constructor() {
+        console.log(this.arrOfAccounts);
+    }
 
     updateDashBoardData() {
         this.userDashData = this.userService.getUserDashData();
@@ -43,9 +47,13 @@ export class SectionComponent {
         this.updateDashBoardData();
         this.transactService.updateDashBoardData();
         this.goalService.updateDashBoardData();
+        this.accountService.updateDashBoardData();
         if (this.transactService.updateSignal) {
             this.updateChart();
+            this.updateDashBoardData();
+            this.arrOfAccounts = this.accountService.updateAccountsArr();
             this.transactService.updateSignal = false;
+            this.transactionsToShow = this.loggedUserDashData.transactions;
         }
     }
 
@@ -224,6 +232,18 @@ export class SectionComponent {
         }
     }
 
+    loadAptTransactions(accNum: string): Transaction[] {
+        this.updateDashBoardData();
+        if (accNum == "") return this.transactionsToShow;
+        this.transactionsToShow = [];
+        const userTransactions = this.loggedUserDashData.transactions;
+        userTransactions.forEach(transact => {
+            if (transact.toOrFrom == Number(accNum)) {
+                this.transactionsToShow.push(transact);
+            }
+        });
+        return this.transactionsToShow;
+    }
 
     updateChartData() {
         const chartDataXSmall = ["Ent..", "Hea..", "Shp..", "Tra..", "Edu..", "Oth.."];

@@ -18,6 +18,23 @@ export class AccountService {
     userDashData: UserDash[] = this.userService.getUserDashData();
     loggedIndx: number = this.userService.getLoggedIndx();
     loggedUserDashData: UserDash = this.userDashData[this.loggedIndx];
+    arrOfAccounts: Account[] = this.updateAccountsArr();
+
+    updateDashBoardData() {
+        this.userDashData = this.userService.getUserDashData();
+        this.loggedIndx = this.userService.getLoggedIndx();
+        this.loggedUserDashData = this.userDashData[this.loggedIndx];
+    }
+
+    updateAccountsArr(): Account[] {
+        this.arrOfAccounts = [];
+        this.updateDashBoardData();
+        const userAccounts = this.loggedUserDashData.accounts;
+        userAccounts.forEach(acc => {
+            this.arrOfAccounts.push(acc);
+        });
+        return this.arrOfAccounts;
+    }
 
     openNewAccPopup(overlay: HTMLDivElement, newAccPopup: HTMLDivElement) {
         overlay.style.display = "block";
@@ -36,20 +53,20 @@ export class AccountService {
 
     addNewAccount(newAccForm: NgForm, overlay: HTMLDivElement, newAccPopup: HTMLDivElement) {
         const newAccount: Account = {
-            accno: newAccForm.controls['accNummber'].value,
-            accifsc: newAccForm.controls['accIfsc'].value,
-            accname: newAccForm.controls['accName'].value
+            accno: newAccForm.form.get('accNumber')?.value,
+            accifsc: newAccForm.form.get('accIfsc')?.value,
+            accname: newAccForm.form.get('accName')?.value
         }
         const newTransact: Transaction = {
             type: "income",
-            amount: newAccForm.controls['accBalance'].value,
+            amount: newAccForm.form.get('accBalance')?.value,
             date: this.date2Day,
-            category: "balance",
-            source: newAccount.accno
+            category: "Initial",
+            toOrFrom: newAccount.accno
         }
-        this.loggedUserDashData.accounts.push();
+        this.loggedUserDashData.accounts.push(newAccount);
         this.loggedUserDashData.transactions.push(newTransact);
-        this.loggedUserDashData.income += newTransact.amount;
+        this.loggedUserDashData.income += Number(newTransact.amount);
         this.userDashData[this.loggedIndx] = this.loggedUserDashData;
         this.userService.setUserDashData(this.userDashData);
         this.transactService.updateSignal = true;
