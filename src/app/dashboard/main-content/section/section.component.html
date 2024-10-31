@@ -43,6 +43,11 @@
                 >
                     <i class="fa-solid fa-arrow-rotate-right"></i>
                 </button>
+                <button class="chart-reset-btn" id="chart-filter-reset"
+                (click)="openFilterPopup(overlay, expFltrPopup)"
+                >
+                <i class="fa-solid fa-filter-circle-dollar"></i>
+            </button>
             </div>
             <div class="category-btns">
                 <button id="chart-filter-entertain"
@@ -92,16 +97,46 @@
             ></canvas>
         </div>
     </div>
+    <div class="exp-fltr-div" id="expense-filter-popup" #expFltrPopup>
+        <h2 style="margin-top: 8px" id="goal-complete-name">Filter Expense</h2>
+        <button class="close-popup" id="goal-complete-close-popup"
+            (click)="closeFilterPopup(overlay, expFltrPopup, expFltrForm)">
+            &times;
+        </button>
+        <form #expFltrForm="ngForm" id="exp-fltr-form" (ngSubmit)="applyExpenseChartFilter(expFltrForm, overlay, expFltrPopup)">
+            <h4 style="display: inline">From:</h4>
+                <input type="date" required ngModel name="fromDate" #startDate="ngModel">
+            <h4 style="display: inline">To:</h4>
+            <input type="date" required ngModel name="toDate" #endDate="ngModel">
+            <input
+                type="submit"
+                value="Filter Expense"
+                [disabled]="expFltrForm.invalid || (startDate.value && endDate.value && startDate.value > endDate.value)"
+            >
+            <p class="popup-errors" id="exp-fltr-error">
+                @if (startDate.value && endDate.value && startDate.value > endDate.value) {
+                    To date must be later than from date!
+                } @else { {{errorOut}} }
+            </p>
+        </form>
+    </div>
     <div class="mid-section-three">
         <div class="source-filter">
             <h3>Transaction History</h3>
+            <button class="download-csv" id="download-csv-btn"
+                (click)="downloadTransactionsCsv(transactFilterForm)"
+            >
+                <i class="fa-solid fa-file-export" style="margin-right: 5px;"></i>
+                Export CSV
+            </button>
             <form #transactFilterForm="ngForm">
-                <select ngModel
+                <select
+                    ngModel
                     name="accSel"
                     (change)="loadAptTransactions
                     (transactFilterForm.controls['accSel'].value)"
                 >
-                    <option value=""></option>
+                    <option value="">Select an account</option>
                     @for (acc of arrOfAccounts; track $index) {
                         <option
                             value="{{acc.accno}}"
@@ -297,7 +332,7 @@
                         style="font-weight: 600; font-size: 17px"
                         value="{{acc.accno}}"
                     >
-                        {{acc.accno}}
+                        {{acc.accname}} - {{acc.accno}}
                     </option>
                 } @empty {
                     <option>No account on file</option>
@@ -416,7 +451,7 @@
                 required
                 name="accBalance"
                 pattern="[0-9]+"
-                min="100000"
+                min="25000"
             />
             <input id="save-acc-btn" type="submit" value="Save Account"
                 [disabled]="newAccForm.invalid"
