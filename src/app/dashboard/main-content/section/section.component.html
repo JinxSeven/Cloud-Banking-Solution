@@ -123,12 +123,16 @@
     <div class="mid-section-three">
         <div class="source-filter">
             <h3>Transaction History</h3>
-            <button class="download-csv" id="download-csv-btn"
+            <button class="transact-history-btns" id="download-csv-btn"
                 (click)="downloadTransactionsCsv(transactFilterForm)"
             >
                 <i class="fa-solid fa-file-export" style="margin-right: 5px;"></i>
                 Export CSV
             </button>
+            <a href="https://thiagodnf.github.io/csv-graph/" target="_blank" rel="noopener noreferrer" routerLinkActive="router-link-active" ><button class="transact-history-btns" id="visualize-csv-btn">
+                <i class="fa-solid fa-chart-pie" style="margin-right: 5px;"></i>
+                Visualize CSV
+            </button></a>
             <form #transactFilterForm="ngForm">
                 <select
                     ngModel

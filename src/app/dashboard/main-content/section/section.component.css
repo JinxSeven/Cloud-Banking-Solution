@@ -559,7 +559,7 @@
     display: grid;
     overflow: auto;
     width: 100%;
-    max-height: 50vh;
+    max-height: 34vh;
     border-radius: 8px;
     overflow-y: scroll;
 }
@@ -643,7 +643,7 @@
     background-color: #14813a;
 }
 
-#download-csv-btn {
+.transact-history-btns {
     margin-top: 1rem;
     color: #af92ff;
     background-color: #1e1e1e;
@@ -653,7 +653,7 @@
     transition: color 0.3s;
 }
 
-#download-csv-btn:hover {
+.transact-history-btns:hover {
     cursor: pointer;
     background-color: #222222fd;
 }
