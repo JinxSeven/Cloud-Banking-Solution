@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../services/user.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
     selector: 'app-login-page',
     standalone: true,
-    imports: [FormsModule],
+    imports: [FormsModule, RouterModule],
     templateUrl: './login-page.component.html',
     styleUrl: './login-page.component.css',
 })
