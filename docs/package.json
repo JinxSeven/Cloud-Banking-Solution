@@ -1,6 +1,7 @@
 {
     "name": "csv-graph",
     "version": "1.0.0",
+    "type": "module",
     "description": "Use this tool to visualize csv files as charts",
     "main": "index.js",
     "scripts": {
@@ -13,10 +14,15 @@
     "author": "Thiago Ferreira",
     "license": "MIT",
     "dependencies": {
+        "@google/generative-ai": "^0.21.0",
         "connect": "^3.6.6",
         "livereload": "^0.9.1",
         "network": "^0.4.1",
         "serve-static": "^1.13.2",
         "winston": "^2.4.2"
+    },
+    "devDependencies": {
+        "webpack": "^5.96.1",
+        "webpack-cli": "^5.1.4"
     }
 }

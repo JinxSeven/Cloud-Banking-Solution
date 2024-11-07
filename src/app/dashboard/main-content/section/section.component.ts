@@ -79,16 +79,25 @@ export class SectionComponent {
                 "Type",
                 "Amount",
                 "Source/Destination",
+                "Account Num",
                 "Category",
                 "Date"
             ],
-            ...this.transactionsToShow.map(transaction => [
-                transaction.type,
-                transaction.amount,
-                transaction.toOrFrom,
-                transaction.category,
-                transaction.date
-            ])
+            ...this.transactionsToShow.map(transaction => {
+                const account = this.arrOfAccounts.find(
+                    acc => String(acc.accno) === String(transaction.toOrFrom)
+                );
+
+                const accountName = account?.accname;
+                return [
+                    transaction.type,
+                    transaction.amount,
+                    transaction.toOrFrom,
+                    accountName,
+                    transaction.category,
+                    transaction.date
+                ]
+            })
         ];
     }
 
@@ -323,9 +332,9 @@ export class SectionComponent {
             return acc.accno == transactFilterForm.form.get('accSel')?.value;
         });
         if (account.length > 0) {
-            fileName = account[0].accname
+            fileName = `${this.loggedUserDashData.username}-${account[0].accname}`
         } else {
-            fileName = "Transactions";
+            fileName = `${this.loggedUserDashData.username}-overall`;
         }
         const csvContent = this.csvString
             .map((row: any) => row
